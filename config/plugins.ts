@@ -3,14 +3,15 @@ module.exports = ({ env }) => ({
     config: {
       provider: "strapi-provider-upload-azure-storage",
       providerOptions: {
-        authType: env("STORAGE_AUTH_TYPE", "default"),
+        authType: "default",
         account: env("AZURE_STORAGE_ACCOUNT"),
-        accountKey: env("AZURE_STORAGE_ACCOUNT_KEY"),//either account key or sas token is enough to make authentication 
-        // sasToken: env("STORAGE_ACCOUNT_SAS_TOKEN"),
+        accountKey: env("AZURE_STORAGE_ACCOUNT_KEY"), // Use account key for uploads
+        sasToken: env("AZURE_STORAGE_ACCOUNT_SAS_TOKEN"), // Use SAS token for URL generation
         containerName: env("AZURE_STORAGE_CONTAINER_NAME"),
-        publicAccessType: 'blob', // optional ('blob' | 'container')
         defaultPath: "assets",
-        cdnBaseURL: env("AZURE_CDN_URL"),
+        sas: true, // Enable SAS for URL generation
+        publicAccessType: 'blob',
+        serviceBaseURL: `https://${env('AZURE_STORAGE_ACCOUNT')}.blob.core.windows.net/`,
       },
     },
   },
